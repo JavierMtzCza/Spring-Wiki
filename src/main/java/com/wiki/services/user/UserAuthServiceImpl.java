@@ -5,7 +5,7 @@ import com.wiki.models.role.repositories.RoleRepository;
 import com.wiki.models.user.dtos.UserDTOLoginRequest;
 import com.wiki.models.user.dtos.UserDTORegisterRequest;
 import com.wiki.models.user.dtos.UserDTOTokenResponse;
-import com.wiki.models.user.dtos.mappers.UserMapper;
+import com.wiki.models.user.dtos.UserMapper;
 import com.wiki.models.user.entities.User;
 import com.wiki.models.user.repositories.UserRepository;
 import com.wiki.utils.JsonWebTokenUtil;

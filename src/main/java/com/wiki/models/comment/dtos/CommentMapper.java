@@ -1,9 +1,7 @@
-package com.wiki.models.comment.dtos.mappers;
+package com.wiki.models.comment.dtos;
 
-import com.wiki.models.comment.dtos.CommentDTOBasicResponse;
-import com.wiki.models.comment.dtos.CommentDTORepliesResponse;
 import com.wiki.models.comment.entities.Comment;
-import com.wiki.models.user.dtos.mappers.UserMapper;
+import com.wiki.models.user.dtos.UserMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

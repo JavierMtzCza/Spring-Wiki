@@ -17,11 +17,11 @@ public class TopicController {
    @Autowired
    private TopicService topicService;
 
-   @GetMapping("/{name}/notes")
-   public ResponseEntity<?> getNotes(@PathVariable String name) {
-      TopicDTOBasicNotesResponse response = topicService.getTopicNotes(name);
-      return ResponseEntity.ok().body(response);
-   }
+//   @GetMapping("/{name}/notes")
+//   public ResponseEntity<?> getNotes(@PathVariable String name) {
+//      TopicDTOBasicNotesResponse response = topicService.getTopicNotes(name);
+//      return ResponseEntity.ok().body(response);
+//   }
 
    @PostMapping("/create")
    public ResponseEntity<?> createTopic(@RequestBody Topic topic) {

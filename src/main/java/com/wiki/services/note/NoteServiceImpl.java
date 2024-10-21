@@ -2,9 +2,10 @@ package com.wiki.services.note;
 
 import com.wiki.models.note.dtos.NoteDTOBasicResponse;
 import com.wiki.models.note.dtos.NoteDTOContentResponse;
-import com.wiki.models.note.dtos.mappers.NoteMapper;
+import com.wiki.models.note.dtos.NoteMapper;
 import com.wiki.models.note.entities.Note;
 import com.wiki.models.note.repositories.NoteRepository;
+import com.wiki.models.topic.dtos.TopicDTOBasicNotesResponse;
 import com.wiki.models.topic.entities.Topic;
 import com.wiki.models.user.entities.User;
 import com.wiki.services.topic.TopicService;
@@ -12,6 +13,8 @@ import com.wiki.services.user.UserService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,4 +62,12 @@ public class NoteServiceImpl implements NoteService {
       Note note = getNoteByTitle(title);
       return NoteMapper.INSTANCE.noteToContentDTO(note);
    }
+
+   @Override
+   public Page<NoteDTOBasicResponse> getNotesByTopicName(String topicName, int page, int size) {
+      PageRequest pageRequest = PageRequest.of(page, size);
+      return noteRepository.findByTopic_Name(topicName, pageRequest)
+            .map(NoteMapper.INSTANCE::noteToBasicDTO);
+   }
+
 }

@@ -5,6 +5,7 @@ import com.wiki.models.note.dtos.NoteDTOContentResponse;
 import com.wiki.models.note.entities.Note;
 import com.wiki.services.note.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,14 @@ public class NoteController {
 
    @Autowired
    private NoteService noteService;
+
+   @GetMapping("/{topicName}/notes")
+   public Page<NoteDTOBasicResponse> getPaginatedNotesByTopicName(
+         @PathVariable String topicName,
+         @RequestParam(defaultValue = "0") int page,
+         @RequestParam(defaultValue = "5") int size) {
+      return noteService.getNotesByTopicName(topicName, page, size);
+   }
 
    @GetMapping("/{title}/content")
    public ResponseEntity<?> getNoteContent(@PathVariable String title) {

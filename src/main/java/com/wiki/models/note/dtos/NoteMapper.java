@@ -1,11 +1,8 @@
-package com.wiki.models.note.dtos.mappers;
+package com.wiki.models.note.dtos;
 
-import com.wiki.models.note.dtos.NoteDTOBasicResponse;
-import com.wiki.models.note.dtos.NoteDTOContentResponse;
 import com.wiki.models.note.entities.Note;
-import com.wiki.models.user.dtos.mappers.UserMapper;
+import com.wiki.models.user.dtos.UserMapper;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(uses = {UserMapper.class})

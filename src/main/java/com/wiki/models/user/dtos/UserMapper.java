@@ -1,7 +1,5 @@
-package com.wiki.models.user.dtos.mappers;
+package com.wiki.models.user.dtos;
 
-import com.wiki.models.user.dtos.UserDTOBasicResponse;
-import com.wiki.models.user.dtos.UserDTORegisterRequest;
 import com.wiki.models.user.entities.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

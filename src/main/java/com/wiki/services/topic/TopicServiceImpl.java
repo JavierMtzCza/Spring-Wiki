@@ -1,8 +1,9 @@
 package com.wiki.services.topic;
 
+import com.wiki.models.note.dtos.NoteMapper;
 import com.wiki.models.topic.dtos.TopicDTOBasicNotesResponse;
 import com.wiki.models.topic.dtos.TopicDTOBasicResponse;
-import com.wiki.models.topic.dtos.mappers.TopicMapper;
+import com.wiki.models.topic.dtos.TopicMapper;
 import com.wiki.models.topic.entities.Topic;
 import com.wiki.models.topic.repositories.TopicRepository;
 import com.wiki.models.user.entities.User;
@@ -10,6 +11,7 @@ import com.wiki.services.user.UserService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,12 +51,4 @@ public class TopicServiceImpl implements TopicService {
       return TopicMapper.INSTANCE.topicToBasicDTO(topicRepository.save(topic));
    }
 
-   @Override
-   @Transactional(readOnly = true)
-   public TopicDTOBasicNotesResponse getTopicNotes(String name) {
-
-      Topic topic = getTopicByName(name);
-
-      return TopicMapper.INSTANCE.topicToBasicNotesDTO(topic);
-   }
 }

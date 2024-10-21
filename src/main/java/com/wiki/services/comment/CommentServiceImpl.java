@@ -1,8 +1,7 @@
 package com.wiki.services.comment;
 
 import com.wiki.models.comment.dtos.CommentDTOBasicResponse;
-import com.wiki.models.comment.dtos.CommentDTORepliesResponse;
-import com.wiki.models.comment.dtos.mappers.CommentMapper;
+import com.wiki.models.comment.dtos.CommentMapper;
 import com.wiki.models.comment.entities.Comment;
 import com.wiki.models.comment.repositories.CommentRepository;
 import com.wiki.models.note.entities.Note;
