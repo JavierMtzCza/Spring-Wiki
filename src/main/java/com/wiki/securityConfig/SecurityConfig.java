@@ -1,5 +1,6 @@
 package com.wiki.securityConfig;
 
+import com.wiki.services.user.UserAuthServiceImpl;
 import com.wiki.services.user.UserServiceImpl;
 import com.wiki.utils.JsonWebTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(http -> {
                http.requestMatchers(HttpMethod.POST, "/auth/**").permitAll();
+
+               http.requestMatchers(HttpMethod.POST, "/topic/**").hasAnyRole("ADMIN", "USER");
+
                http.anyRequest().denyAll();
             })
             .build();
@@ -43,9 +47,9 @@ public class SecurityConfig {
    }
 
    @Bean
-   public AuthenticationProvider authenticationProvider(UserServiceImpl userService) {
+   public AuthenticationProvider authenticationProvider(UserAuthServiceImpl userAuthService) {
       DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-      daoAuthenticationProvider.setUserDetailsService(userService);
+      daoAuthenticationProvider.setUserDetailsService(userAuthService);
       daoAuthenticationProvider.setPasswordEncoder(pwdEncoder());
 
       return daoAuthenticationProvider;

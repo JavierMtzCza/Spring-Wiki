@@ -29,42 +29,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
    @Autowired
    private UserRepository userRepository;
 
-   @Autowired
-   private RoleRepository roleRepository;
-
-   @Autowired
-   private JsonWebTokenUtil tokenUtil;
-
-   @Autowired
-   private PasswordEncoder passwordEncoder;
-
-   @Override
-   @Transactional(readOnly = true)
-   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-
-      User userEntity = userRepository.findUserByEmail(email).orElseThrow(() -> new EntityNotFoundException("Email not found"));
-
-      List<SimpleGrantedAuthority> authorities = userEntity
-            .getRoles()
-            .stream()
-            .map(rol -> new SimpleGrantedAuthority("ROLE_".concat(rol.getName().name())))
-            .toList();
-
-      return new org.springframework.security.core.userdetails.User(
-            userEntity.getEmail(),
-            userEntity.getPassword(),
-            userEntity.isEnabled(),
-            true,
-            true,
-            userEntity.isAccountNoLocked(),
-            authorities
-      );
-   }
 
    @Override
    @Transactional(readOnly = true)
@@ -77,57 +46,5 @@ public class UserServiceImpl implements UserService, UserDetailsService {
    public List<User> getAllUsers() {
       return userRepository.findAll();
    }
-
-   @Override
-   @Transactional
-   public UserDTOTokenResponse createUser(UserDTORegister userData) {
-
-      if (userRepository.findUserByEmail(userData.email()).isPresent())
-         throw new EntityExistsException("El usuario ya existe");
-
-      Set<Role> roles = roleRepository.findAllByNameIn(userData.roles());
-
-      if (roles.isEmpty()) {
-         throw new IllegalArgumentException("No se encontraron roles válidos");
-      }
-
-      User newUser = UserMapper.INSTANCE.toUser(userData);
-      newUser.setRoles(roles);
-      newUser.setPassword(passwordEncoder.encode(userData.password()));
-      User savedUser = userRepository.save(newUser);
-
-      UsernamePasswordAuthenticationToken authentication =
-            new UsernamePasswordAuthenticationToken(savedUser.getEmail(), savedUser.getPassword(), savedUser.getRoles().stream()
-                  .map(role -> new SimpleGrantedAuthority(role.getName().name()))
-                  .collect(Collectors.toList()));
-      SecurityContextHolder.getContext().setAuthentication(authentication);
-
-      String token = tokenUtil.createToken(authentication);
-
-      return new UserDTOTokenResponse(newUser.getEmail(), newUser.getName(), token);
-   }
-
-   @Override
-   public UserDTOTokenResponse loginUser(UserDTOLogin userDataLogin) {
-
-      String email = userDataLogin.email();
-
-      UserDetails userDetails = loadUserByUsername(email);
-      if (userDetails == null) {
-         throw new BadCredentialsException("Invalid username or password");
-      }
-
-      if (!passwordEncoder.matches(userDataLogin.password(), userDetails.getPassword())) {
-         throw new BadCredentialsException("Invalid username or password");
-      }
-
-      Authentication authentication = new UsernamePasswordAuthenticationToken(email, userDetails.getPassword(), userDetails.getAuthorities());
-
-      SecurityContextHolder.getContext().setAuthentication(authentication);
-      String token = tokenUtil.createToken(authentication);
-
-      return new UserDTOTokenResponse(email, email, token);
-   }
-
 
 }

@@ -3,7 +3,7 @@ package com.wiki.controllers;
 import com.wiki.models.user.dtos.UserDTOLogin;
 import com.wiki.models.user.dtos.UserDTORegister;
 import com.wiki.models.user.dtos.UserDTOTokenResponse;
-import com.wiki.services.user.UserService;
+import com.wiki.services.user.UserAuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,17 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
    @Autowired
-   private UserService userService;
+   private UserAuthService userAuthService;
 
    @PostMapping("/signIn")
    public ResponseEntity<?> signIn(@RequestBody @Valid UserDTORegister userDTORegister) {
-      UserDTOTokenResponse response = userService.createUser(userDTORegister);
+      UserDTOTokenResponse response = userAuthService.createUser(userDTORegister);
       return ResponseEntity.status(HttpStatus.CREATED).body(response);
    }
 
    @PostMapping("/logIn")
    public ResponseEntity<?> logIn(@RequestBody @Valid UserDTOLogin userDTOLogin) {
-      UserDTOTokenResponse response = userService.loginUser(userDTOLogin);
+      UserDTOTokenResponse response = userAuthService.loginUser(userDTOLogin);
       return ResponseEntity.ok().body(response);
    }
 }

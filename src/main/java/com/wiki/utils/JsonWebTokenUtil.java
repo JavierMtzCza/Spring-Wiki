@@ -83,10 +83,13 @@ public class JsonWebTokenUtil {
 
    public String[] getRolesFromToken(DecodedJWT decodedJWT) {
       Claim rolesClaim = decodedJWT.getClaim("roles");  // Obtener el claim de roles
-      if (rolesClaim.asString() != null) {
-         return rolesClaim.asString().split(",");  // Dividir la cadena en un arreglo por comas
+      // Validar que el claim no sea nulo y contenga una lista de roles
+      if (rolesClaim.isNull() || rolesClaim.asList(String.class) == null) {
+         return new String[0];  // Retornar un arreglo vacío si no hay roles
       }
-      return new String[0];  // Retornar un arreglo vacío si no hay roles
+
+      // Convertir la lista de roles en un arreglo de String
+      return rolesClaim.asList(String.class).toArray(new String[0]);
    }
 
    public String extractEmail(DecodedJWT decodedJWT) {
