@@ -1,12 +1,12 @@
 package com.wiki.services.user;
 
-import com.wiki.models.user.dtos.UserDTOLogin;
-import com.wiki.models.user.dtos.UserDTORegister;
+import com.wiki.models.user.dtos.UserDTOLoginRequest;
+import com.wiki.models.user.dtos.UserDTORegisterRequest;
 import com.wiki.models.user.dtos.UserDTOTokenResponse;
 
 public interface UserAuthService {
 
-   UserDTOTokenResponse createUser(UserDTORegister userData);
+   UserDTOTokenResponse createUser(UserDTORegisterRequest userData);
 
-   UserDTOTokenResponse loginUser(UserDTOLogin userData);
+   UserDTOTokenResponse loginUser(UserDTOLoginRequest userData);
 }

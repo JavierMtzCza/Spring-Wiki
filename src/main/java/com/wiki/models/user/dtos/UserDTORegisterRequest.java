@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
-public record UserDTORegister(
+public record UserDTORegisterRequest(
       @NotBlank String name,
       @NotBlank String lastName,
       @Email String email,

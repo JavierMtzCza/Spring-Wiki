@@ -26,7 +26,7 @@ public class Topic {
    @JoinColumn(name = "user_id")
    private User createdBy;
 
-   @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
+   @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
    private List<Note> notes;
 
    @Column(name = "created_date")

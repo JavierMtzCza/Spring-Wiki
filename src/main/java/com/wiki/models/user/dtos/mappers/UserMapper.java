@@ -1,6 +1,7 @@
 package com.wiki.models.user.dtos.mappers;
 
-import com.wiki.models.user.dtos.UserDTORegister;
+import com.wiki.models.user.dtos.UserDTOBasicResponse;
+import com.wiki.models.user.dtos.UserDTORegisterRequest;
 import com.wiki.models.user.entities.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,5 +14,7 @@ public interface UserMapper {
 
    @Mapping(target = "roles", ignore = true)
    @Mapping(target = "password", ignore = true)
-   User toUser(UserDTORegister userDTO);
+   User userDTORegisterToUser(UserDTORegisterRequest userDTO);
+
+   UserDTOBasicResponse userToBasicDTO(User user);
 }

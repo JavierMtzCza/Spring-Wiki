@@ -22,6 +22,7 @@ public class Note {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
+   @Column(unique = true)
    private String title;
    private String description;
 
@@ -36,7 +37,7 @@ public class Note {
    @JoinColumn(name = "topic_id") // La columna que hace referencia a Topic
    private Topic topic; // Este es el campo que se refiere a Topic
 
-   @ManyToMany
+   @ManyToMany(fetch = FetchType.LAZY)
    @JoinTable(
          name = "note_files",
          joinColumns = @JoinColumn(name = "note_id"),
@@ -44,7 +45,7 @@ public class Note {
    )
    private List<File> files;
 
-   @OneToMany(mappedBy = "note", cascade = CascadeType.ALL, orphanRemoval = true)
+   @OneToMany(mappedBy = "note", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
    private List<Comment> comments;
 
    @Column(name = "created_date")

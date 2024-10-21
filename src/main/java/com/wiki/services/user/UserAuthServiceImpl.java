@@ -2,8 +2,8 @@ package com.wiki.services.user;
 
 import com.wiki.models.role.entities.Role;
 import com.wiki.models.role.repositories.RoleRepository;
-import com.wiki.models.user.dtos.UserDTOLogin;
-import com.wiki.models.user.dtos.UserDTORegister;
+import com.wiki.models.user.dtos.UserDTOLoginRequest;
+import com.wiki.models.user.dtos.UserDTORegisterRequest;
 import com.wiki.models.user.dtos.UserDTOTokenResponse;
 import com.wiki.models.user.dtos.mappers.UserMapper;
 import com.wiki.models.user.entities.User;
@@ -68,7 +68,7 @@ public class UserAuthServiceImpl implements UserDetailsService,UserAuthService {
 
 
    @Transactional
-   public UserDTOTokenResponse createUser(UserDTORegister userData) {
+   public UserDTOTokenResponse createUser(UserDTORegisterRequest userData) {
 
       if (userRepository.findUserByEmail(userData.email()).isPresent())
          throw new EntityExistsException("El usuario ya existe");
@@ -79,7 +79,7 @@ public class UserAuthServiceImpl implements UserDetailsService,UserAuthService {
          throw new IllegalArgumentException("No se encontraron roles válidos");
       }
 
-      User newUser = UserMapper.INSTANCE.toUser(userData);
+      User newUser = UserMapper.INSTANCE.userDTORegisterToUser(userData);
       newUser.setRoles(roles);
       newUser.setPassword(passwordEncoder.encode(userData.password()));
       User savedUser = userRepository.save(newUser);
@@ -96,7 +96,7 @@ public class UserAuthServiceImpl implements UserDetailsService,UserAuthService {
    }
 
    @Transactional
-   public UserDTOTokenResponse loginUser(UserDTOLogin userDataLogin) {
+   public UserDTOTokenResponse loginUser(UserDTOLoginRequest userDataLogin) {
 
       String email = userDataLogin.email();
 

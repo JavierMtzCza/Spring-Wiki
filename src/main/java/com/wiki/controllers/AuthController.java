@@ -1,7 +1,7 @@
 package com.wiki.controllers;
 
-import com.wiki.models.user.dtos.UserDTOLogin;
-import com.wiki.models.user.dtos.UserDTORegister;
+import com.wiki.models.user.dtos.UserDTOLoginRequest;
+import com.wiki.models.user.dtos.UserDTORegisterRequest;
 import com.wiki.models.user.dtos.UserDTOTokenResponse;
 import com.wiki.services.user.UserAuthService;
 import jakarta.validation.Valid;
@@ -20,13 +20,13 @@ public class AuthController {
    private UserAuthService userAuthService;
 
    @PostMapping("/signIn")
-   public ResponseEntity<?> signIn(@RequestBody @Valid UserDTORegister userDTORegister) {
+   public ResponseEntity<?> signIn(@RequestBody @Valid UserDTORegisterRequest userDTORegister) {
       UserDTOTokenResponse response = userAuthService.createUser(userDTORegister);
       return ResponseEntity.status(HttpStatus.CREATED).body(response);
    }
 
    @PostMapping("/logIn")
-   public ResponseEntity<?> logIn(@RequestBody @Valid UserDTOLogin userDTOLogin) {
+   public ResponseEntity<?> logIn(@RequestBody @Valid UserDTOLoginRequest userDTOLogin) {
       UserDTOTokenResponse response = userAuthService.loginUser(userDTOLogin);
       return ResponseEntity.ok().body(response);
    }

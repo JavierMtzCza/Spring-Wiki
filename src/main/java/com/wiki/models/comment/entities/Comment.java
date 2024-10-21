@@ -31,7 +31,7 @@ public class Comment {
    @JoinColumn(name = "note_id")
    private Note note;
 
-   @OneToMany(mappedBy = "parentComment",cascade = CascadeType.ALL, orphanRemoval = true)
+   @OneToMany(mappedBy = "parentComment", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
    private List<Comment> replies;
 
    @ManyToOne
